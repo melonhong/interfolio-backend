@@ -51,6 +51,12 @@ public class SecurityConfig {
                             response.sendRedirect("http://localhost:5173?token=" + token);
                         })
                 )
+                // 로그아웃 설정
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/") // 성공 시 이동할 경로
+                        .invalidateHttpSession(true) // 세션 제거
+                        .deleteCookies("JSESSIONID") // 쿠키 제거
+                )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
