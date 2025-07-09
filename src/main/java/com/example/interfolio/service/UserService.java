@@ -5,6 +5,8 @@ import com.example.interfolio.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UserService {
 
@@ -19,4 +21,12 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."));
     }
+
+    public User getOrCreateUser(String email, String name) {
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> createUser(
+                        new User(null, email, name, "google", LocalDateTime.now()))
+                );
+    }
+
 }
